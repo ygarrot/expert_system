@@ -37,6 +37,7 @@ class CalculateTree(Transformer):
         self.vars = {}
 
     def assign_var(self, name, value):
+        print(name, value)
         self.vars[name] = value
         return value
 
