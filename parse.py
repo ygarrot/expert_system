@@ -61,11 +61,12 @@ def main():
         print(calc(s))
 
 def test():
-    string = "A + B + (T | B) => B"
+    string = "A + B + (T | !B) => B"
     print(string)
     # print(calc(string))
     tree = calc(string)
     print(tree.pretty())
+    tree.iter_subtrees()
 
 if __name__ == '__main__':
     test()
