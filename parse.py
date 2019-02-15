@@ -8,16 +8,16 @@ except NameError:
 fact_dict = {}
 
 calc_grammar = """
-    ?start: imply | initial_fact | query
+    ?start: (imply _LI)+ initial_fact _LI query _LI
 
     ?imply: xor "=>" xor -> imply
         | xor "<=>" xor -> iff
     ?xor: or
-        | xor "^" xor  -> xor
+        | xor "^" or  -> xor
     ?or: and
-        | xor "|" xor   -> or
+        | or "|" and   -> or
     ?and: atom
-        | xor "+" xor   -> and
+        | and "+" atom   -> and
     ?atom: UCASE_LETTER        -> var
          | "!" atom      -> not
          | "(" xor ")"
@@ -25,9 +25,12 @@ calc_grammar = """
     ?initial_fact: "=" UCASE_LETTER+
     ?query: "?" UCASE_LETTER+
 
+    _LI: LF
+
     %import common.UCASE_LETTER
     %import common.NUMBER
     %import common.WS_INLINE
+    %import common.LF
     %ignore WS_INLINE
     %ignore /#.*/
 """
@@ -76,13 +79,10 @@ def main():
         print(calc(s))
 
 def test():
-    string = "A + B + B | T + B => B"
-#    string = "A | B | A <=> B"
-#    string = "A => S"
-#    string = "=ABG"
-#    string = "# ?ABG"
-#    string = "C + B => C# => C      # C AND B implies C"
-#    string = "C + R"
+    string = """A <=> S + A
+    S => S + S
+    =QWE
+    ?SAL\n"""
     print(string)
     try:
         tree = calc(string)
@@ -90,9 +90,7 @@ def test():
         print("Wrong file format")
         return
     print(tree.pretty("\033[1;32m--->\033[0m"))
-    print(tree.children[0].pretty("\033[1;32m--->\033[0m"))
-    print(tree.children[1].pretty("\033[1;32m--->\033[0m"))
-
+    tree.
  #   t.children = tree.children[0]
  #   for token in tree.children[1]
  #       if (type(toke  == common.LETTER)
