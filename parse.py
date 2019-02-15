@@ -21,6 +21,8 @@ calc_grammar = """
     ?atom: LETTER        -> var
          | "!" atom      -> not
          | "(" assign ")" 
+    ?query: "?" LETTER+
+    ?initial_fact: "=" LETTER+
 
     %import common.LETTER
     %import common.NUMBER
@@ -28,11 +30,18 @@ calc_grammar = """
     %ignore WS_INLINE
 """
 
-
 @v_args(inline=True)    # Affects the signatures of the methods
 class CalculateTree(Transformer):
     from operator import __and__, __or__, __xor__, __not__
     number = bool
+
+    def set_fact(self, string):
+        for letters in string:
+          fact_dict[letters] = True  
+
+    def get_fact_state(self, string):
+        for letters in string:
+            print(fact_dict[letters].get_value())
 
     def assign_var(self, name, value):
         fact_dict[name] = value
@@ -43,12 +52,16 @@ class CalculateTree(Transformer):
            fact_dict[name] = 0
         return fact_dict[name]
 
-    def test(self):
-        return fact_dict
-
+def run_instruction(t):
+    try:
+        print(t.data)
+        for instr in t.children:
+            run_instruction(instr)
+    except:
+         return
 
 calc_parser = Lark(calc_grammar, parser='lalr')
-#, transformer=CalculateTree())
+#, transformer=CalculateTree()) Cheat ? 
 calc = calc_parser.parse
 
 
@@ -63,11 +76,11 @@ def main():
 def test():
     string = "A + B + (T | !B) => B"
     print(string)
-    # print(calc(string))
     tree = calc(string)
     print(tree.pretty())
-    tree.iter_subtrees()
+    for instr in tree.children:
+    	run_instruction(instr)
 
 if __name__ == '__main__':
-    test()
+   test()
     # main()

@@ -54,8 +54,11 @@ def run_instruction(t):
 
 def run_turtle(program):
     parse_tree = parser.parse(program)
+    # print(parse_tree.pretty())
     for inst in parse_tree.children:
-        run_instruction(inst)
+        print(inst)
+        print()
+        # run_instruction(inst)
 
 def main():
     while True:
