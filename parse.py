@@ -1,7 +1,4 @@
-
-#
-# This example shows how to write a basic calculator with variables.
-#
+fact_dict = {}
 
 from lark import Lark, Transformer, v_args
 
@@ -10,7 +7,6 @@ try:
     input = raw_input   # For Python2 compatibility
 except NameError:
     pass
-
 
 calc_grammar = """
     ?start: assign
@@ -38,20 +34,17 @@ class CalculateTree(Transformer):
     from operator import __and__, __or__, __xor__, __not__
     number = bool
 
-    def __init__(self):
-        self.vars = {}
-
     def assign_var(self, name, value):
-        self.vars[name] = value
+        fact_dict[name] = value
         return value
 
     def var(self, name):
-        if (self.vars.get(name) == None):
-           self.vars[name] = 0
-        return self.vars[name]
+        if (fact_dict.get(name) == None):
+           fact_dict[name] = 0
+        return fact_dict[name]
 
     def test(self):
-        return self.vars
+        return fact_dict
 
 
 calc_parser = Lark(calc_grammar, parser='lalr')
@@ -67,14 +60,12 @@ def main():
             break
         print(calc(s))
 
-
 def test():
-    string = "A + B + T | B => B"
+    string = "A + B + (T | B) => B"
     print(string)
     # print(calc(string))
-    print(calc(string).pretty())
-    # print(calc_parser.transforme())
-
+    tree = calc(string)
+    print(tree.pretty())
 
 if __name__ == '__main__':
     test()
