@@ -1,6 +1,4 @@
-
-#
-# This example shows how to write a basic calculator with variables.
+#this example shows how to write a basic calculator with variables.
 #
 
 from lark import Lark, Transformer, v_args
@@ -13,19 +11,20 @@ except NameError:
 
 
 calc_grammar = """
-    ?start: assign
-    ?assign: xor
-    ?xor: or
-        | and "^" atom  -> xor
-    ?or: and
-        | and "|" atom   -> or
-    ?and: atom
-        | and "+" atom   -> and
-    ?atom: LETTER        -> var
-         | LETTER "=>" LETTER -> assign_var
-         | "(" assign ")" 
-
-    %import common.LETTER
+    ?start: sum
+          | NAME "=" sum    -> assign_var
+    ?sum: product
+        | sum "+" product   -> add
+        | sum "-" product   -> sub
+    ?product: atom
+        | product "*" atom  -> mul
+        | product "/" atom  -> div
+    ?atom: NUMBER           -> number
+         | "-" atom         -> neg
+         | NAME             -> var
+         | "(" sum ")"
+    %import common.CNAME -> NAME
+    %import common.NUMBER
     %import common.WS_INLINE
     %ignore WS_INLINE
 """
@@ -33,8 +32,8 @@ calc_grammar = """
 
 @v_args(inline=True)    # Affects the signatures of the methods
 class CalculateTree(Transformer):
-    from operator import __and__, __or__, __xor__, __not__
-    number = bool
+    from operator import add, sub, mul, truediv as div, neg
+    number = float
 
     def __init__(self):
         self.vars = {}
@@ -44,12 +43,7 @@ class CalculateTree(Transformer):
         return value
 
     def var(self, name):
-        if (self.vars.get(name) == None):
-           self.vars[name] = 0
         return self.vars[name]
-
-    def test(self):
-        return self.vars
 
 
 calc_parser = Lark(calc_grammar, parser='lalr', transformer=CalculateTree())
@@ -66,11 +60,8 @@ def main():
 
 
 def test():
-    string = "A + B + T | B => B"
-    print(string)
-    print(calc(string).children)
-    print(calc(string).pretty())
-    # print(calc_parser.transforme())
+    print(calc("a = 1+2"))
+    print(calc("1+a*-3"))
 
 
 if __name__ == '__main__':
