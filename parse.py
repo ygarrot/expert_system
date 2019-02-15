@@ -13,11 +13,11 @@ calc_grammar = """
     ?imply: xor "=>" xor -> imply
         | xor "<=>" xor -> iff
     ?xor: or
-        | xor "^" xor  -> xor
+        | xor "^" or  -> xor
     ?or: and
-        | xor "|" xor   -> or
+        | or "|" and   -> or
     ?and: atom
-        | xor "+" xor   -> and
+        | and "+" atom   -> and
     ?atom: UCASE_LETTER        -> var
          | "!" atom      -> not
          | "(" xor ")"
@@ -76,7 +76,7 @@ def main():
         print(calc(s))
 
 def test():
-    string = "A + B + B | T + B => B"
+    string = "A + B | B + T | B => B"
 #    string = "A | B | A <=> B"
 #    string = "A => S"
 #    string = "=ABG"
