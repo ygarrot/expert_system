@@ -46,7 +46,7 @@ class CalculateTree(Transformer):
         return self.vars[name]
 
 
-calc_parser = Lark(calc_grammar, parser='lalr', transformer=CalculateTree())
+calc_parser = Lark(calc_grammar, parser='lalr')
 calc = calc_parser.parse
 
 
@@ -60,8 +60,9 @@ def main():
 
 
 def test():
-    print(calc("a = 1+2"))
-    print(calc("1+a*-3"))
+    print("a = 1+2 *(2 + 3*1-(7 + 3))")
+    print(calc("a = 1+2 *(2 + 3*1-(7 + 3))").pretty())
+    # print(calc("1+a*-3"))
 
 
 if __name__ == '__main__':

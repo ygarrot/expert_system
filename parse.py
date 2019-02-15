@@ -15,6 +15,7 @@ except NameError:
 calc_grammar = """
     ?start: assign
     ?assign: xor
+        | xor "=>" LETTER -> assign_var
     ?xor: or
         | and "^" atom  -> xor
     ?or: and
@@ -22,10 +23,11 @@ calc_grammar = """
     ?and: atom
         | and "+" atom   -> and
     ?atom: LETTER        -> var
-         | LETTER "=>" LETTER -> assign_var
+         | "!" atom      -> not
          | "(" assign ")" 
 
     %import common.LETTER
+    %import common.NUMBER
     %import common.WS_INLINE
     %ignore WS_INLINE
 """
@@ -52,7 +54,8 @@ class CalculateTree(Transformer):
         return self.vars
 
 
-calc_parser = Lark(calc_grammar, parser='lalr', transformer=CalculateTree())
+calc_parser = Lark(calc_grammar, parser='lalr')
+#, transformer=CalculateTree())
 calc = calc_parser.parse
 
 
@@ -68,7 +71,7 @@ def main():
 def test():
     string = "A + B + T | B => B"
     print(string)
-    print(calc(string).children)
+    # print(calc(string))
     print(calc(string).pretty())
     # print(calc_parser.transforme())
 
