@@ -1,8 +1,8 @@
 import config
 
-def check_fact(key):
+def check_fact(key, value=True):
     if (config.fact_dict.get(key) == None):
-        config.fact_dict[key] = Fact(value=True)
+        config.fact_dict[key] = Fact(value=False)
 
 class Fact:
 
@@ -10,8 +10,8 @@ class Fact:
         self.trees = list()
         self.value = value
 
-    def get_value(self):
+    def get_value(self, computer):
         config.glob = True
         for tree in self.trees:
-            computer.apply_func(tree)
+            self.value = computer.apply_func(tree)
         return self.value

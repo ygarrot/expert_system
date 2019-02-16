@@ -1,4 +1,5 @@
 from fact import Fact, check_fact
+from ft_op import ft_op
 from config import *
 import config
 
@@ -24,12 +25,12 @@ class CalculateTree(Transformer):
           print(letter)
           print(config.fact_dict[letter])
 
-    def apply_func():
+    def apply_func(self, tree):
         if (isinstance(tree, Tree) == False):
-            check_fact(str(tree))
-            return config.fact_dict[str(tree)].get_value()
+            check_fact(str(tree), False)
+            return config.fact_dict[str(tree)].get_value(self)
         else:
-            return get_attr(ft_op, tree.data)(tree.children[0], tree.children[0])
+            return getattr(ft_op, tree.data)(self.apply_func(tree.children[0]), self.apply_func(tree.children[1]))
 
     def assign_var(self, name, value):
         config.fact_dict[name] = Fact(value)
@@ -43,11 +44,10 @@ class CalculateTree(Transformer):
         return config.fact_dict[name].get_value()
 
     def set_value(self, tree, op_tree):
-        print(tree)
         if (isinstance(tree, Tree) == False):
             check_fact(str(tree))
             config.fact_dict[str(tree)].trees.append(op_tree)
-        elif (tree.data == 'and'):
+        elif (tree.data == 'ft_and'):
             self.set_value(tree.children[0], op_tree)
             self.set_value(tree.children[1], op_tree)
         return

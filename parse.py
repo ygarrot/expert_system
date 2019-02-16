@@ -67,15 +67,15 @@ def set_trees(tree):
   new_tree = list(tree)[0].children[0]
   for imply in list(lchild):
     computer.set_value(imply, new_tree)
-  print(config.fact_dict)
-  print(config.fact_dict['C'].get_value())
+  # print(config.fact_dict)
+  print(config.fact_dict['C'].get_value(computer))
 
 def test():
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
     # cal_parser.transformer = 0
     string = """#we
     A + B => C + D + E#wewe
-    =ABE
+    =ADE
     ?SAL\n"""
     print(string)
     try:
