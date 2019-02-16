@@ -1,8 +1,7 @@
 import traceback
 import logging
-from tree_transformer import CalculateTree
-from config import glob, fact_dict
-from lark import Lark, Transformer, v_args
+from tree_transformer import Calculate_tree
+from config import *
 
 try:
     input = raw_input   # For Python2 compatibility

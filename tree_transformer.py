@@ -1,6 +1,5 @@
-from lark import Lark, Transformer, v_args
 from fact import Fact
-from config import glob, fact_dict
+from config import *
 
 @v_args(inline=True)    # Affects the signatures of the methods
 class CalculateTree(Transformer):
