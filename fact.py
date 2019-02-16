@@ -1,7 +1,7 @@
-class fact:
+class Fact:
 
     def __init__(self, trees = {}, value = False):
-        self.tree = trees
+        self.trees = trees
         self.value = value
 
     def get_value(self):
