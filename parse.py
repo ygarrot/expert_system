@@ -1,6 +1,6 @@
 import traceback
 import logging
-from tree_transformer import Calculate_tree
+from tree_transformer import CalculateTree
 from config import *
 
 try:
