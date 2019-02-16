@@ -16,16 +16,16 @@ calc_grammar = r"""
     ?imply: xor "=>" xor    -> imply
         | xor "<=>" xor     -> iff
     ?xor: or
-        | xor "^" or        -> xor
+        | xor "^" or        -> ft_xor
     ?or: and
-        | or "|" and        -> or
+        | or "|" and        -> ft_or
     ?and: atom
-        | and "+" atom      -> and
+        | and "+" atom      -> ft_and
     ?atom: UCASE_LETTER     -> var
         | "!" atom         -> not
         | "(" xor ")"
 
-    ?initial_fact: "=" UCASE_LETTER+ -> initial_fact
+    ?initial_fact: "=" UCASE_LETTER+ -> set_fact
     ?query: "?" UCASE_LETTER+ ->query
 
     _LI: (_COMMENT | LF)
@@ -40,12 +40,6 @@ calc_grammar = r"""
 """
 
 def run_instruction(t):
-  # if (t.data == var)
-    # return var.get_value()
-  # if (t.data == op)
-    # return func_tab[op](children1, children2)
-  # else
-    # error
     try:
         print(t.data)
         for instr in t.children:
@@ -73,14 +67,15 @@ def set_trees(tree):
   new_tree = list(tree)[0].children[0]
   for imply in list(lchild):
     computer.set_value(imply, new_tree)
-  print(config.fact_dict['A'].get_value())
+  print(config.fact_dict)
+  print(config.fact_dict['C'].get_value())
 
 def test():
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
     # cal_parser.transformer = 0
     string = """#we
-    A + B => A + D + D#wewe
-    =QWE
+    A + B => C + D + E#wewe
+    =ABE
     ?SAL\n"""
     print(string)
     try:

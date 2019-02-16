@@ -11,6 +11,7 @@ class Fact:
         self.value = value
 
     def get_value(self):
+        config.glob = True
         for tree in self.trees:
-            self.value = tree()
+            computer.apply_func(tree)
         return self.value
