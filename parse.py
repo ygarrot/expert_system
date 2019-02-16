@@ -9,6 +9,7 @@ try:
 except NameError:
     pass
 
+computer = CalculateTree()
 calc_grammar = r"""
     ?start: (imply _LI)+ initial_fact _LI query _LI
 
@@ -60,8 +61,19 @@ def main():
             break
         print(calc(s))
 
+def set_fact(tree):
+  ifact = tree.find_data("initial_fact")
+  for fact in ifact:
+     computer.iter_subtree(fact)
+
+def set_trees(tree)
+  implies = tree.find_data("imply")
+  for imply in implies:
+    print(imply)
+    
+ 
+
 def test():
-    computer = CalculateTree()
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
     string = """#we
     S +S => S #wewe
@@ -76,18 +88,13 @@ def test():
     config.glob = True
     print(tree.pretty(pstr))
     subtrees = list(tree.iter_subtrees())
-    ifact = tree.find_data("initial_fact")
-    for fact in ifact:
-      computer.iter_subtree(fact)
-    print(fact_dict)
-
-    return
-    for subtree in (subtrees):
-      try:
-        subtree.iter_subtrees()
-      except:
-        print("couldn't .sub")
-      print(subtree.pretty(pstr))
+    set_trees(tree)
+    # for subtree in (subtrees):
+    #   try:
+    #     subtree.iter_subtrees()
+    #   except:
+    #     print("couldn't .sub")
+    #   print(subtree.pretty(pstr))
 
 if __name__ == '__main__':
    test()
