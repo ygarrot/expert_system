@@ -74,6 +74,13 @@ def test():
         debug=True, transformer=computer) # Cheat ?
     # cal_parser.transformer = 0
     string = """B => A
+    D + E => B
+    G + H => F
+    I + J => G
+    G => H
+    L + M => K
+    O + P => L + N
+    N => M
     =B 
     ?AFKP
     """
@@ -85,8 +92,9 @@ def test():
         return
     # config.glob = True
     print(tree.pretty(pstr))
-    # print(config.fact_dict['B'].get_value(computer))
+    # print("B value", config.fact_dict['B'].get_value(computer))
     set_trees(tree)
+    # print("B value", config.fact_dict['B'].get_value(computer))
     query(tree)
 
 if __name__ == '__main__':

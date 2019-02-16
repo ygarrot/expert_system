@@ -29,14 +29,14 @@ class CalculateTree(Transformer):
                     self.apply_func(tree.children[1]))
 
     def assign_var(self, name, value):
-        config.fact_dict[name] = Fact(value)
+        config.fact_dict[name] = Fact(value=value, key=name)
         return value
 
     def var(self, name):
         if (config.glob != True):
           return name
         if (config.fact_dict.get(name) == None):
-          config.fact_dict[name] = Fact()
+          config.fact_dict[name] = Fact(key=name)
         return config.fact_dict[name].get_value(self)
 
     def set_value(self, tree, op_tree):
