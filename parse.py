@@ -3,9 +3,9 @@ import logging
 from lark import Lark, Transformer, v_args
 
 try:
-    input = raw_input   # For Python2 compatibility
+  input = raw_input   # For Python2 compatibility
 except NameError:
-    pass
+  pass
 
 fact_dict = {}
 
@@ -40,24 +40,24 @@ calc_grammar = r"""
 
 @v_args(inline=True)    # Affects the signatures of the methods
 class CalculateTree(Transformer):
-    from operator import __and__, __or__, __xor__, __not__
+  from operator import __and__, __or__, __xor__, __not__
     number = bool
 
     def set_fact(self, string):
-        for letters in string:
-          fact_dict[letters] = True
+      for letters in string:
+        fact_dict[letters] = True
 
     def get_fact_state(self, string):
-        for letters in string:
-            print(fact_dict[letters].get_value())
+      for letters in string:
+        print(fact_dict[letters].get_value())
 
     def assign_var(self, name, value):
-        fact_dict[name] = value
+      fact_dict[name] = value
         return value
 
     def var(self, name):
-        if (fact_dict.get(name) == None):
-           fact_dict[name] = 0
+      if (fact_dict.get(name) == None):
+        fact_dict[name] = 0
         return fact_dict[name]
 
 calc_parser = Lark(calc_grammar, parser='lalr', debug=True)
@@ -65,36 +65,38 @@ calc_parser = Lark(calc_grammar, parser='lalr', debug=True)
 calc = calc_parser.parse
 
 def run_instruction(t):
-    try:
-        print(t.data)
+  try:
+    print(t.data)
         for instr in t.children:
-            run_instruction(instr)
-    except:
-         return
+          run_instruction(instr)
+  except:
+    return
 
 
 def main():
-    while True:
-        try:
-            s = input('> ')
-        except EOFError:
-            break
-        print(calc(s))
+  while True:
+    try:
+      s = input('> ')
+    except EOFError:
+      break
+    print(calc(s))
 
 def test():
-    string = """A <=> S + A
+  string = """A <=> S + A
 #we
     S => S + S#wewe
     =QWE
     ?SAL\n"""
     print(string)
     try:
-        tree = calc(string)
+      tree = calc(string)
     except Exception as e:
-        logging.error(traceback.format_exc())
+      logging.error(traceback.format_exc())
         return
     print(tree.pretty("\033[1;32m--->\033[0m"))
- #   t.children = tree.children[0]
+    # subtrees = list(tree.iter_subtrees())
+     # for subtree in (subtrees):
+                          #   t.children = tree.children[0]
  #   for token in tree.children[1]
  #       if (type(toke  == common.LETTER)
  #           if (!fact_tree[token])
@@ -106,5 +108,5 @@ def test():
    # 	run_instruction(instr)
 
 if __name__ == '__main__':
-   test()
+  test()
     # main()
