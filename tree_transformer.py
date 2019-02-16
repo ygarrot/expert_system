@@ -43,6 +43,7 @@ class CalculateTree(Transformer):
         return config.fact_dict[name].get_value()
 
     def set_value(self, tree, op_tree):
+        print(tree)
         if (isinstance(tree, Tree) == False):
             check_fact(str(tree))
             config.fact_dict[str(tree)].trees.append(op_tree)
