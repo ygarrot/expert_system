@@ -1,4 +1,4 @@
-from fact import Fact
+from fact import Fact, check_fact
 from config import *
 import config
 
@@ -21,17 +21,29 @@ class CalculateTree(Transformer):
           return string
         for letter in string:
           print(letter)
-          print(fact_dict[letter])
+          print(config.fact_dict[letter])
 
     def assign_var(self, name, value):
         if (config.glob != True):
           return name
-        fact_dict[name] = Fact(value)
+        config.fact_dict[name] = Fact(value)
         return value
 
     def var(self, name):
         if (config.glob != True):
           return name
-        if (fact_dict.get(name) == None):
-           fact_dict[name] = Fact()
-        return fact_dict[name].get_value()
+        if (config.fact_dict.get(name) == None):
+          config.fact_dict[name] = Fact()
+        return config.fact_dict[name].get_value()
+
+    def set_value(self, tree, op_tree):
+        if (isinstance(tree, Tree) == False):
+            check_fact(str(tree))
+            config.fact_dict[str(tree)].trees.append(op_tree)
+        elif (tree.data == 'and'):
+            self.set_value(tree.children[0], op_tree)
+            self.set_value(tree.children[1], op_tree)
+        return
+    # def set_tree(self, tree)
+        # for 
+    

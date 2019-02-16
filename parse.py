@@ -66,17 +66,20 @@ def set_fact(tree):
   for fact in ifact:
      computer.iter_subtree(fact)
 
-def set_trees(tree)
+def set_trees(tree):
   implies = tree.find_data("imply")
-  for imply in implies:
-    print(imply)
-    
- 
+  tree = tree.find_data("imply") 
+  lchild = list(list(implies)[0].children[1].iter_subtrees_topdown())
+  new_tree = list(tree)[0].children[0]
+  for imply in list(lchild):
+    computer.set_value(imply, new_tree)
+  print(config.fact_dict)
 
 def test():
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
+    # cal_parser.transformer = 0
     string = """#we
-    S +S => S #wewe
+    A + B => A + D + D#wewe
     =QWE
     ?SAL\n"""
     print(string)
@@ -85,10 +88,10 @@ def test():
     except Exception as e:
         logging.error(traceback.format_exc())
         return
-    config.glob = True
+    # config.glob = True
     print(tree.pretty(pstr))
-    subtrees = list(tree.iter_subtrees())
     set_trees(tree)
+    # subtrees = list(tree.iter_subtrees())
     # for subtree in (subtrees):
     #   try:
     #     subtree.iter_subtrees()
