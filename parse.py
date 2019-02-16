@@ -38,6 +38,12 @@ calc_grammar = r"""
 """
 
 def run_instruction(t):
+  # if (t.data == var)
+    # return var.get_value()
+  # if (t.data == op)
+    # return func_tab[op](children1, children2)
+  # else
+    # error
     try:
         print(t.data)
         for instr in t.children:
