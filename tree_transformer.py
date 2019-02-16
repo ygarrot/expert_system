@@ -51,6 +51,3 @@ class CalculateTree(Transformer):
             self.set_value(tree.children[0], op_tree)
             self.set_value(tree.children[1], op_tree)
         return
-    # def set_tree(self, tree)
-        # for 
-    

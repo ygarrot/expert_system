@@ -68,14 +68,14 @@ def set_trees(tree):
   for imply in list(lchild):
     computer.set_value(imply, new_tree)
   # print(config.fact_dict)
-  print(config.fact_dict['C'].get_value(computer))
+  print(config.fact_dict['D'].get_value(computer))
 
 def test():
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
     # cal_parser.transformer = 0
     string = """#we
-    A + B | C => C + D + E#wewe
-    =ADE
+    A + B | C => D + E + E#wewe
+    =C
     ?SAL\n"""
     print(string)
     try:
@@ -86,13 +86,6 @@ def test():
     # config.glob = True
     print(tree.pretty(pstr))
     set_trees(tree)
-    # subtrees = list(tree.iter_subtrees())
-    # for subtree in (subtrees):
-    #   try:
-    #     subtree.iter_subtrees()
-    #   except:
-    #     print("couldn't .sub")
-    #   print(subtree.pretty(pstr))
 
 if __name__ == '__main__':
    test()
