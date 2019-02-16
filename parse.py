@@ -2,6 +2,7 @@ import traceback
 import logging
 from tree_transformer import CalculateTree
 from config import *
+import config
 
 try:
     input = raw_input   # For Python2 compatibility
@@ -23,8 +24,8 @@ calc_grammar = r"""
         | "!" atom         -> not
         | "(" xor ")"
 
-    ?initial_fact: "=" UCASE_LETTER+ -> set_fact
-    ?query: "?" UCASE_LETTER+ -> get_fact_state
+    ?initial_fact: "=" UCASE_LETTER+ -> initial_fact
+    ?query: "?" UCASE_LETTER+ ->query
 
     _LI: (_COMMENT | LF)
     _COMMENT: /#[^\n].*\n/
@@ -62,9 +63,8 @@ def main():
 def test():
     computer = CalculateTree()
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
-    string = """A + N | B | (S + N) <=> S + A
-#we
-    S => S + S#wewe
+    string = """#we
+    S +S => S #wewe
     =QWE
     ?SAL\n"""
     print(string)
@@ -73,9 +73,20 @@ def test():
     except Exception as e:
         logging.error(traceback.format_exc())
         return
+    config.glob = True
     print(tree.pretty(pstr))
     subtrees = list(tree.iter_subtrees())
+    ifact = tree.find_data("initial_fact")
+    for fact in ifact:
+      computer.iter_subtree(fact)
+    print(fact_dict)
+
+    return
     for subtree in (subtrees):
+      try:
+        subtree.iter_subtrees()
+      except:
+        print("couldn't .sub")
       print(subtree.pretty(pstr))
 
 if __name__ == '__main__':
