@@ -20,8 +20,7 @@ class CalculateTree(Transformer):
 
     def get_fact_state(self, string):
         for letter in string:
-          print(letter)
-          print(self.var(letter))
+          print(letter '=', self.var(letter))
 
     def apply_func(self, tree):
         if (isinstance(tree, Tree) == False):
@@ -40,7 +39,7 @@ class CalculateTree(Transformer):
           return name
         if (config.fact_dict.get(name) == None):
           config.fact_dict[name] = Fact()
-        return config.fact_dict[name].get_value(self)
+        return config.fact_dict[name].get_value()
 
     def set_value(self, tree, op_tree):
         if (isinstance(tree, Tree) == False):
