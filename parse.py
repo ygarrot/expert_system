@@ -1,3 +1,4 @@
+import argparse
 import traceback
 import logging
 from tree_transformer import CalculateTree
@@ -11,7 +12,7 @@ except NameError:
 
 computer = CalculateTree()
 calc_grammar = r"""
-    ?start: (imply _LI)+ initial_fact _LI query _LI
+    ?start: _LI (imply _LI)+ initial_fact _LI query _LI
 
     ?imply: xor "=>" xor    -> imply
         | xor "<=>" xor     -> iff
@@ -57,8 +58,6 @@ def set_trees(tree):
   for imply in list(implies):
     new_tree = imply.children[0]
     computer.set_value(imply.children[1], new_tree)
-    # print(config.fact_dict)
-    # print(config.fact_dict['D'].get_value(computer))
 
 def query(tree):
   config.glob = True
@@ -69,20 +68,14 @@ def query(tree):
   computer.get_fact_state(st)
 
 
-def test():
+def test(interactive=False):
     calc_parser = Lark(calc_grammar, parser='lalr',
         debug=True, transformer=computer) # Cheat ?
-    # cal_parser.transformer = 0
-    string = """B => A
-    D + E => B
-    G + H => F
-    I + J => G
-    G => H
-    L + M => K
-    O + P => L + N
-    N => M
-    =B 
-    ?AFKP
+    string = """
+    A | B + C => E 
+    (F | G) + H => E 
+    =FH
+    ?E
     """
     print(string)
     try:
@@ -90,13 +83,25 @@ def test():
     except Exception as e:
         logging.error(traceback.format_exc())
         return
-    # config.glob = True
     print(tree.pretty(pstr))
     # print("B value", config.fact_dict['B'].get_value(computer))
     set_trees(tree)
     # print("B value", config.fact_dict['B'].get_value(computer))
     query(tree)
-
+    if (interactive == True):
+        while True:
+           try:
+               s = input('> ')
+           except EOFError:
+               break
+           print(calc_parser.parse(s))
+           set_trees(tree)
+           query(tree)
+        
 if __name__ == '__main__':
-   test()
-    # main()
+  parser = argparse.ArgumentParser(description='Smarter expert system you have ever seen')
+  parser.add_argument("-i", "--interactive", default=False, action="store_true",
+                                       help="interactive expert system")
+  args = parser.parse_args()
+  test(args.interactive)
+  # main()
