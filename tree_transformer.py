@@ -8,13 +8,13 @@ class CalculateTree(Transformer):
 
     def set_fact(self, *string):
         if (glob != True):
-          return
+          return string
         for letter in string:
           fact_dict[letter] = True
 
     def get_fact_state(self, *string):
         if (glob != True):
-          return
+          return string
         for letter in string:
           print(letter)
           print(fact_dict[letter])
@@ -31,5 +31,3 @@ class CalculateTree(Transformer):
         if (fact_dict.get(name) == None):
            fact_dict[name] = Fact()
         return fact_dict[name].get_value()
-
-

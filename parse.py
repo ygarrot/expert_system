@@ -11,17 +11,17 @@ except NameError:
 calc_grammar = r"""
     ?start: (imply _LI)+ initial_fact _LI query _LI
 
-    ?imply: xor "=>" xor -> imply
-        | xor "<=>" xor -> iff
+    ?imply: xor "=>" xor    -> imply
+        | xor "<=>" xor     -> iff
     ?xor: or
-        | xor "^" or  -> xor
+        | xor "^" or        -> xor
     ?or: and
-        | or "|" and   -> or
+        | or "|" and        -> or
     ?and: atom
-        | and "+" atom   -> and
-    ?atom: UCASE_LETTER        -> var
-         | "!" atom      -> not
-         | "(" xor ")"
+        | and "+" atom      -> and
+    ?atom: UCASE_LETTER     -> var
+        | "!" atom         -> not
+        | "(" xor ")"
 
     ?initial_fact: "=" UCASE_LETTER+ -> set_fact
     ?query: "?" UCASE_LETTER+ -> get_fact_state
@@ -36,9 +36,6 @@ calc_grammar = r"""
     %ignore WS_INLINE
     %ignore _COMMENT
 """
-calc_parser = Lark(calc_grammar, parser='lalr', debug=True
-, transformer=CalculateTree()) # Cheat ?
-calc = calc_parser.parse
 
 def run_instruction(t):
     try:
@@ -57,21 +54,23 @@ def main():
         print(calc(s))
 
 def test():
-    string = """A <=> S + A
+    computer = CalculateTree()
+    calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
+    string = """A + N | B | (S + N) <=> S + A
 #we
     S => S + S#wewe
     =QWE
     ?SAL\n"""
     print(string)
     try:
-        tree = calc(string)
+        tree = calc_parser.parse(string)
     except Exception as e:
         logging.error(traceback.format_exc())
         return
-    print(tree.pretty("\033[1;32m--->\033[0m"))
+    print(tree.pretty(pstr))
     subtrees = list(tree.iter_subtrees())
     for subtree in (subtrees):
-      print(subtree)
+      print(subtree.pretty(pstr))
 
 if __name__ == '__main__':
    test()
