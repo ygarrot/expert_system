@@ -74,7 +74,7 @@ def test():
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
     # cal_parser.transformer = 0
     string = """#we
-    A + B => C + D + E#wewe
+    A + B | C => C + D + E#wewe
     =ADE
     ?SAL\n"""
     print(string)
