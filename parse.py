@@ -73,7 +73,7 @@ def set_trees(tree):
   new_tree = list(tree)[0].children[0]
   for imply in list(lchild):
     computer.set_value(imply, new_tree)
-  print(config.fact_dict)
+  print(config.fact_dict['A'].get_value())
 
 def test():
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
