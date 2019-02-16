@@ -87,7 +87,9 @@ def test():
     # config.glob = True
     print(tree.pretty(pstr))
     set_trees(tree)
-    print(config.fact_dict['D'].get_value(computer))
+    for truc in config.fact_dict
+      print(truc)
+    # print(config.fact_dict['D'].get_value(computer))
 
 if __name__ == '__main__':
    test()
