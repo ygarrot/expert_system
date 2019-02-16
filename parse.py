@@ -63,19 +63,20 @@ def set_fact(tree):
 def set_trees(tree):
   implies = tree.find_data("imply")
   tree = tree.find_data("imply") 
-  lchild = list(list(implies)[0].children[1].iter_subtrees_topdown())
-  new_tree = list(tree)[0].children[0]
-  for imply in list(lchild):
-    computer.set_value(imply, new_tree)
-  # print(config.fact_dict)
-  print(config.fact_dict['D'].get_value(computer))
+  for imply in list(tree):
+    new_tree = imply.children[0]
+    print(imply.children[1])
+    computer.set_value(imply.children[1], new_tree)
+    # print(config.fact_dict)
+    # print(config.fact_dict['D'].get_value(computer))
 
 def test():
     calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
     # cal_parser.transformer = 0
     string = """#we
+    B => A
     A + B | C => D + E + E#wewe
-    =C
+    =B
     ?SAL\n"""
     print(string)
     try:
@@ -86,6 +87,7 @@ def test():
     # config.glob = True
     print(tree.pretty(pstr))
     set_trees(tree)
+    print(config.fact_dict['D'].get_value(computer))
 
 if __name__ == '__main__':
    test()
