@@ -1,3 +1,5 @@
+import traceback
+import logging
 from lark import Lark, Transformer, v_args
 
 try:
@@ -7,7 +9,7 @@ except NameError:
 
 fact_dict = {}
 
-calc_grammar = """
+calc_grammar = r"""
     ?start: (imply _LI)+ initial_fact _LI query _LI
 
     ?imply: xor "=>" xor -> imply
@@ -25,14 +27,15 @@ calc_grammar = """
     ?initial_fact: "=" UCASE_LETTER+
     ?query: "?" UCASE_LETTER+
 
-    _LI: LF
+    _LI: (_COMMENT | LF)
+    _COMMENT: /#[^\n].*\n/
 
     %import common.UCASE_LETTER
     %import common.NUMBER
     %import common.WS_INLINE
     %import common.LF
     %ignore WS_INLINE
-    %ignore /#.*/
+    %ignore _COMMENT
 """
 
 @v_args(inline=True)    # Affects the signatures of the methods
@@ -57,7 +60,7 @@ class CalculateTree(Transformer):
            fact_dict[name] = 0
         return fact_dict[name]
 
-calc_parser = Lark(calc_grammar, parser='lalr')
+calc_parser = Lark(calc_grammar, parser='lalr', debug=True)
 #, transformer=CalculateTree()) # Cheat ?
 calc = calc_parser.parse
 
@@ -80,17 +83,17 @@ def main():
 
 def test():
     string = """A <=> S + A
-    S => S + S
+#we
+    S => S + S#wewe
     =QWE
     ?SAL\n"""
     print(string)
     try:
         tree = calc(string)
-    except:
-        print("Wrong file format")
+    except Exception as e:
+        logging.error(traceback.format_exc())
         return
     print(tree.pretty("\033[1;32m--->\033[0m"))
-    tree.
  #   t.children = tree.children[0]
  #   for token in tree.children[1]
  #       if (type(toke  == common.LETTER)
