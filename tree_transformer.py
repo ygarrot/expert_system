@@ -9,7 +9,6 @@ class CalculateTree(Transformer):
     number = bool
 
     def iter_subtree(self, fact_tree):
-        print (config.glob)
         for fact in fact_tree.children:
             self.set_fact(str(fact))
 
@@ -24,8 +23,7 @@ class CalculateTree(Transformer):
 
     def apply_func(self, tree):
         if (isinstance(tree, Tree) == False):
-            check_fact(str(tree), False)
-            return config.fact_dict[str(tree)].get_value(self)
+            return self.var(str(tree)) 
         else:
             return getattr(ft_op, tree.data)(self.apply_func(tree.children[0]),
                     self.apply_func(tree.children[1]))

@@ -28,7 +28,7 @@ calc_grammar = r"""
     ?initial_fact: "=" UCASE_LETTER+ -> set_fact
     ?query: "?" UCASE_LETTER+ ->query
 
-    _LI: (_COMMENT | LF)
+    _LI: (_COMMENT | LF+)
     _COMMENT: /#[^\n].*\n/
 
     %import common.UCASE_LETTER
@@ -38,14 +38,6 @@ calc_grammar = r"""
     %ignore WS_INLINE
     %ignore _COMMENT
 """
-
-def run_instruction(t):
-    try:
-        print(t.data)
-        for instr in t.children:
-            run_instruction(instr)
-    except:
-         return
 
 def main():
     while True:
@@ -81,11 +73,10 @@ def test():
     calc_parser = Lark(calc_grammar, parser='lalr',
         debug=True, transformer=computer) # Cheat ?
     # cal_parser.transformer = 0
-    string = """#we
-    B => A
-    A + B | C => D + E + E#wewe
-    =B
-    ?SAL\n"""
+    string = """B => A
+    =B 
+    ?AFKP
+    """
     print(string)
     try:
         tree = calc_parser.parse(string)
@@ -94,9 +85,9 @@ def test():
         return
     # config.glob = True
     print(tree.pretty(pstr))
+    # print(config.fact_dict['B'].get_value(computer))
     set_trees(tree)
     query(tree)
-    # print(config.fact_dict['D'].get_value(computer))
 
 if __name__ == '__main__':
    test()
