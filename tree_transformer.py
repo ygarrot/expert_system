@@ -18,19 +18,18 @@ class CalculateTree(Transformer):
            print(letter)
            self.assign_var(letter, True)
 
-    def get_fact_state(self, *string):
-        if (config.glob != True):
-          return string
+    def get_fact_state(self, string):
         for letter in string:
           print(letter)
-          print(config.fact_dict[letter])
+          print(self.var(letter))
 
     def apply_func(self, tree):
         if (isinstance(tree, Tree) == False):
             check_fact(str(tree), False)
             return config.fact_dict[str(tree)].get_value(self)
         else:
-            return getattr(ft_op, tree.data)(self.apply_func(tree.children[0]), self.apply_func(tree.children[1]))
+            return getattr(ft_op, tree.data)(self.apply_func(tree.children[0]),
+                    self.apply_func(tree.children[1]))
 
     def assign_var(self, name, value):
         config.fact_dict[name] = Fact(value)
@@ -41,7 +40,7 @@ class CalculateTree(Transformer):
           return name
         if (config.fact_dict.get(name) == None):
           config.fact_dict[name] = Fact()
-        return config.fact_dict[name].get_value()
+        return config.fact_dict[name].get_value(self)
 
     def set_value(self, tree, op_tree):
         if (isinstance(tree, Tree) == False):

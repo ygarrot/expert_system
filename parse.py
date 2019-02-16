@@ -61,17 +61,25 @@ def set_fact(tree):
      computer.iter_subtree(fact)
 
 def set_trees(tree):
-  implies = tree.find_data("imply")
-  tree = tree.find_data("imply") 
-  for imply in list(tree):
+  implies = tree.find_data("imply") 
+  for imply in list(implies):
     new_tree = imply.children[0]
-    print(imply.children[1])
     computer.set_value(imply.children[1], new_tree)
     # print(config.fact_dict)
     # print(config.fact_dict['D'].get_value(computer))
 
+def query(tree):
+  config.glob = True
+  queries = tree.find_data("query") 
+  st = str()
+  for token in list(queries)[0].children:
+    st += str(token)
+  computer.get_fact_state(st)
+
+
 def test():
-    calc_parser = Lark(calc_grammar, parser='lalr', debug=True, transformer=computer) # Cheat ?
+    calc_parser = Lark(calc_grammar, parser='lalr',
+        debug=True, transformer=computer) # Cheat ?
     # cal_parser.transformer = 0
     string = """#we
     B => A
@@ -87,8 +95,7 @@ def test():
     # config.glob = True
     print(tree.pretty(pstr))
     set_trees(tree)
-    for truc in config.fact_dict
-      print(truc)
+    query(tree)
     # print(config.fact_dict['D'].get_value(computer))
 
 if __name__ == '__main__':
