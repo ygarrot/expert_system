@@ -27,7 +27,9 @@ class Fact:
         self.mutex_lock = True
         config.glob = True
         for idx, tree in enumerate(self.trees):
-            new_state = (tree[1] & computer.apply_func(tree[0]))
+            new_state = computer.apply_func(tree[0])
+            new_state = not new_state if tree[1] else new_state
+            print("key", self.key, "state", new_state, tree[1])
             if (idx > 0 and new_state != self.state):
                 self.ft_error()
             self.state |= new_state 

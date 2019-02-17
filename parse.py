@@ -70,9 +70,8 @@ def query(tree):
 
 def test(interactive=False):
     calc_parser = Lark(calc_grammar, parser='lalr',
-        debug=True, transformer=computer) # Cheat ?
+        debug=True, transformer=computer)
     string = """
-    A=>B
     A=>!B
     E=>A|D
     A+!C=>D+D ^ E+E
@@ -89,6 +88,7 @@ def test(interactive=False):
     set_trees(tree)
     # print("B value", config.fact_dict['B'].get_value(computer))
     query(tree)
+    print(config.fact_dict)
     if (interactive == True):
         while True:
            try:
