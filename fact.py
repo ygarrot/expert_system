@@ -16,5 +16,5 @@ class Fact:
         config.glob = True
         #TODO Change that lul
         for tree in self.trees:
-            self.state |= tree[1] * computer.apply_func(tree[0])
+            self.state |= (tree[1] & computer.apply_func(tree[0]))
         return self.state
