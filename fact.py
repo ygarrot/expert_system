@@ -15,6 +15,7 @@ class Fact:
         self.state = state
 
     def ft_error(self):
+        print(self.key)
         print("infinit loop wtf!!!")
         exit()
 

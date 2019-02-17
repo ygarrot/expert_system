@@ -63,5 +63,6 @@ class InferenceEngine(Transformer):
             self.set_state(tree.children[int(choice)], op_tree, is_not)
         elif (tree.data == 'ft_xor'):
             choice = self.ask_choice(tree)
-            self.set_state(tree.children[int(choice)], op_tree, True)
-            self.set_state(tree.children[(not int(choice))], op_tree, False)
+            #TODO change that
+            self.set_state(tree.children[int(choice)], op_tree, False)
+            self.set_state(tree.children[(not int(choice))], op_tree, True)

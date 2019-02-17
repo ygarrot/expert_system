@@ -76,7 +76,7 @@ def test(interactive=False):
     E=>A|D
     A+!C=>D+D ^ E+E
     =A
-    ?B
+    ?EAC
     """
     print(string)
     try:
