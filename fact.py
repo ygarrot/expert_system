@@ -1,20 +1,20 @@
 import config
 
-def check_fact(key, value=False):
+def check_fact(key, state=False):
 
     if (config.fact_dict.get(key) == None):
-        config.fact_dict[key] = Fact(value, key)
+        config.fact_dict[key] = Fact(state, key)
 
 class Fact:
 
-    def __init__(self, value = False, key = 0):
+    def __init__(self, state = False, key = 0):
         self.trees = list()
         self.key = key
-        self.value = value
+        self.state = state
 
-    def get_value(self, computer):
+    def get_state(self, computer):
         config.glob = True
         #TODO Change that lul
         for tree in self.trees:
-            self.value |= computer.apply_func(tree)
-        return self.value
+            self.state |= tree[1] * computer.apply_func(tree[0])
+        return self.state

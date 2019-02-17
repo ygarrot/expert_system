@@ -1,4 +1,4 @@
-class ft_op:
+class Ft_op:
 
     # def __init__ (self):
     def ft_and(a, b):
@@ -9,3 +9,6 @@ class ft_op:
 
     def ft_xor(a, b):
         return a ^ b
+
+    def ft_not(a, b):
+        return not a

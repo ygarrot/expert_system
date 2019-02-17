@@ -1,7 +1,7 @@
 import argparse
 import traceback
 import logging
-from tree_transformer import CalculateTree
+from InferenceEngine import InferenceEngine
 from config import *
 import config
 
@@ -10,7 +10,7 @@ try:
 except NameError:
     pass
 
-computer = CalculateTree()
+computer = InferenceEngine()
 calc_grammar = r"""
     ?start: _LI (imply _LI)+ initial_fact _LI query _LI
 
@@ -23,10 +23,10 @@ calc_grammar = r"""
     ?and: atom
         | and "+" atom      -> ft_and
     ?atom: UCASE_LETTER     -> var
-        | "!" atom         -> not
+        | "!" atom         -> ft_not
         | "(" xor ")"
 
-    ?initial_fact: "=" UCASE_LETTER+ -> set_fact
+    ?initial_fact: "=" UCASE_LETTER* -> set_fact
     ?query: "?" UCASE_LETTER+ ->query
 
     _LI: (_COMMENT | LF+)
@@ -57,7 +57,7 @@ def set_trees(tree):
   implies = tree.find_data("imply") 
   for imply in list(implies):
     new_tree = imply.children[0]
-    computer.set_value(imply.children[1], new_tree)
+    computer.set_state(imply.children[1], new_tree)
 
 def query(tree):
   config.glob = True
@@ -65,17 +65,16 @@ def query(tree):
   st = str()
   for token in list(queries)[0].children:
     st += str(token)
-  computer.get_fact_state(st)
+  computer.print_state(st)
 
 
 def test(interactive=False):
     calc_parser = Lark(calc_grammar, parser='lalr',
         debug=True, transformer=computer) # Cheat ?
     string = """
-    A | B + C => E 
-    (F | G) + H => E 
-    =FH
-    ?E
+    A+!C=>B
+    =A
+    ?B
     """
     print(string)
     try:
@@ -88,6 +87,7 @@ def test(interactive=False):
     set_trees(tree)
     # print("B value", config.fact_dict['B'].get_value(computer))
     query(tree)
+    print(config.fact_dict)
     if (interactive == True):
         while True:
            try:
