@@ -34,7 +34,6 @@ class InferenceEngine(Transformer):
           return name
         if (config.fact_dict.get(name) == None):
           config.fact_dict[name] = Fact(key=name)
-        # config.fact_dict[name].mutex_lock = False
         return config.fact_dict[name].get_state(self)
 
     def set_choices(self,tree):

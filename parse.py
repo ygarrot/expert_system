@@ -41,14 +41,6 @@ calc_grammar = r"""
     %ignore _COMMENT
 """
 
-def main():
-    while True:
-        try:
-            s = input('> ')
-        except EOFError:
-            break
-        print(calc(s))
-
 def set_fact(tree):
   ifact = tree.find_data("initial_fact")
   for fact in ifact:
@@ -67,7 +59,6 @@ def query(tree):
     return
   st = str()
   for token in queries[0].children:
-    print(token)
     st += str(token)
   computer.print_state(st)
 
@@ -91,9 +82,7 @@ def test(interactive=False):
     except Exception as e:
         logging.error(traceback.format_exc())
         return
-    print(tree.pretty(pstr))
     set_trees(tree)
-    # print("B value", config.fact_dict['B'].get_value(computer))
     query(tree)
                 
 if __name__ == '__main__':

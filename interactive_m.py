@@ -1,4 +1,5 @@
 from parse import *
+
 interactive_grammar = r"""
     ?start: imply
         | initial_fact | query
