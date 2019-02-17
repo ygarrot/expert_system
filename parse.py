@@ -83,11 +83,9 @@ def test(interactive=False):
         logging.error(traceback.format_exc())
         return
     print(tree.pretty(pstr))
-    # print("B value", config.fact_dict['B'].get_value(computer))
     set_trees(tree)
     # print("B value", config.fact_dict['B'].get_value(computer))
     query(tree)
-    print(config.fact_dict)
     if (interactive == True):
         while True:
            try:
