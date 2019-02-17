@@ -1,47 +1,16 @@
 import argparse
+from lark import Lark, Transformer, v_args, Tree
 import traceback
 import logging
-from InferenceEngine import InferenceEngine
 from config import *
 import config
+import interactive_m
+
 
 try:
     input = raw_input   # For Python2 compatibility
 except NameError:
     pass
-
-computer = InferenceEngine()
-
-interactive_grammar = r"""
-    ?start: imply
-        | initial_fact | query
-
-    ?imply: xor "=>" xor    -> imply
-        | xor "<=>" xor     -> iff
-    ?xor: or
-        | xor "^" or        -> ft_xor
-    ?or: and
-        | or "|" and        -> ft_or
-    ?and: atom
-        | and "+" atom      -> ft_and
-    ?atom: UCASE_LETTER     -> var
-        | "!" atom         -> ft_not
-        | "(" xor ")"
-
-    ?initial_fact: "=" UCASE_LETTER* -> set_fact
-    ?query: "?" UCASE_LETTER+ ->query
-
-    _LI: (_COMMENT | LF+)
-    _COMMENT: /#[^\n].*\n/
-
-    %import common.UCASE_LETTER
-    %import common.NUMBER
-    %import common.WS_INLINE
-    %import common.LF
-    %ignore WS_INLINE
-    %ignore _COMMENT
-"""
-
 
 calc_grammar = r"""
     ?start: _LI (imply _LI)+ initial_fact _LI query _LI
@@ -93,14 +62,20 @@ def set_trees(tree):
 
 def query(tree):
   config.glob = True
-  queries = tree.find_data("query") 
+  queries = list(tree.find_data("query"))
+  if (len(queries) <= 0):
+    return
   st = str()
-  for token in list(queries)[0].children:
+  for token in queries[0].children:
+    print(token)
     st += str(token)
   computer.print_state(st)
 
 
 def test(interactive=False):
+    if (interactive == True):
+      interactive_m.interactive()
+      return
     calc_parser = Lark(calc_grammar, parser='lalr',
         debug=True, transformer=computer)
     string = """
@@ -120,22 +95,7 @@ def test(interactive=False):
     set_trees(tree)
     # print("B value", config.fact_dict['B'].get_value(computer))
     query(tree)
-    if (interactive == True):
-        calc_parser = Lark(interactive_grammar, parser='lalr',
-        debug=True, transformer=computer)
-        while True:
-           try:
-               s = input('> ')
-           except EOFError:
-               break
-           try:
-               tree = calc_parser.parse(s)
-           except:
-               logging.error(traceback.format_exc())
-               continue
-           set_trees(tree)
-           query(tree)
-        
+                
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Smarter expert system you have ever seen')
   parser.add_argument("-i", "--interactive", default=False, action="store_true",
