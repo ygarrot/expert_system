@@ -72,10 +72,12 @@ def test(interactive=False):
     calc_parser = Lark(calc_grammar, parser='lalr',
         debug=True, transformer=computer) # Cheat ?
     string = """
+    A=>B
+    A=>!B
     E=>A|D
     A+!C=>D+D ^ E+E
     =A
-    ?E
+    ?B
     """
     print(string)
     try:

@@ -26,7 +26,7 @@ class InferenceEngine(Transformer):
                     self.apply_func(tree.children[1] if len(tree.children) > 1 else 0))
 
     def assign_var(self, name, state):
-        config.fact_dict[name] = Fact(state=state, key=name)
+        config.fact_dict[name] = Fact(state=state, key=name, isset=True)
         return state
 
     def var(self, name):
