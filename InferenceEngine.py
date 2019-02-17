@@ -36,6 +36,12 @@ class InferenceEngine(Transformer):
           config.fact_dict[name] = Fact(key=name)
         return config.fact_dict[name].get_state(self)
 
+    def set_choices(self,tree):
+        if (isinstance(tree, Tree) == False):
+            return str(tree)
+        else:
+            return tree.pretty().replace('\n', '')
+
     def set_state(self, tree, op_tree, is_not=1):
         if (isinstance(tree, Tree) == False):
             check_fact(str(tree))
@@ -45,4 +51,9 @@ class InferenceEngine(Transformer):
             self.set_state(tree.children[1], op_tree, is_not)
         elif (tree.data == 'ft_not'):
             self.set_state(tree.children[0], op_tree, -1)
-        return
+        elif (tree.data == 'ft_or'):
+            choices = [self.set_choices(tree.children[0]), self.set_choices(tree.children[1])]
+            choice = 0
+            while choice not in [ '0', '1']:
+                choice = input(str('would you like to choose {'+ choices[0]+ '} or {'+ choices[1]+ '}\n'))
+            self.set_state(tree.children[int(choice)], op_tree, -1)
