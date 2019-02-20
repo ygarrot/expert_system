@@ -46,7 +46,7 @@ def interactive():
                continue
            if (tree == None):
              continue
-           if (tree.data == "imply"):
+           if (tree.data == "imply" or tree.data == "iff"):
                 set_trees(tree)
            else:
                 query(tree)

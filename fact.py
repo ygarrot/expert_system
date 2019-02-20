@@ -20,17 +20,18 @@ class Fact:
 
     def get_state(self, computer):
         #TODO Change that lul
-        if (self.isset == True):
-            return self.state
+        #if (self.isset == True):
+        #    return self.state
         if (self.mutex_lock == 2):
-            self.ft_error()
-        self.mutex_lock+=1 
+            return self.state
+            #self.ft_error()
+        self.mutex_lock+=1
         config.glob = True
         for idx, tree in enumerate(self.trees):
             new_state = computer.apply_func(tree[0])
             new_state = not new_state if tree[1] else new_state
             if (idx > 0 and new_state != self.state):
                 self.ft_error()
-            self.state |= new_state 
+            self.state |= new_state
         self.mutex_lock-=1
         return self.state
