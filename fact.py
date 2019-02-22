@@ -27,7 +27,7 @@ class Fact:
 
     def check_imply(self,tree):
         if (isinstance(tree, Tree)):
-            fact = tree[0].find_data("query")
+            fact = tree.find_data("query")
             for truc in fact:
                 ret = self.check_fact(fact)
         else:
