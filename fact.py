@@ -1,3 +1,5 @@
+import sys
+from lark import Tree
 import config
 
 def check_fact(key, state=False):
@@ -18,19 +20,35 @@ class Fact:
         print("infinit loop wtf!!!")
         exit()
 
+    def check_fact(self,fact):
+        if (self.key == str(fact)):
+            return 1
+            print("infinit loop")
+
+    def check_imply(self,tree):
+        if (isinstance(tree, Tree)):
+            fact = tree[0].find_data("query")
+            for truc in fact:
+                ret = self.check_fact(fact)
+        else:
+            ret = self.check_fact(tree)
+        return ret
+
     def get_state(self, computer):
         #TODO Change that lul
         #if (self.isset == True):
         #    return self.state
-        if (self.mutex_lock == 2):
+        if (self.mutex_lock >= 2):
             return self.state
-            #self.ft_error()
         self.mutex_lock+=1
         config.glob = True
         for idx, tree in enumerate(self.trees):
+            is_set = self.isset is True or idx > 0
+            if (is_set and self.state is True and self.check_imply(tree[0]) and tree[1] is True):
+                sys.exit("infinit loop")
             new_state = computer.apply_func(tree[0])
             new_state = not new_state if tree[1] else new_state
-            if (idx > 0 and new_state != self.state):
+            if ((is_set) and new_state != self.state):
                 self.ft_error()
             self.state |= new_state
         self.mutex_lock-=1

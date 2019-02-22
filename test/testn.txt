@@ -1,0 +1,18 @@
+A => C
+B => !C
+
+=
+C false
+
+=A
+C true
+
+=B
+C false
+
+=AB
+wtf
+
+
+=ABC
+wtf
