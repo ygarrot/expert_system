@@ -23,7 +23,6 @@ class Fact:
     def check_fact(self,fact):
         if (self.key == str(fact)):
             return 1
-            print("infinit loop")
 
     def check_imply(self,tree):
         ret = 0
@@ -36,13 +35,9 @@ class Fact:
         return ret
 
     def get_state(self, computer):
-        #TODO Change that lul
-        # if (self.isset == True):
-           # return self.state
         if (self.mutex_lock >= 2):
-            # self.ft_error()
             return self.state
-        self.mutex_lock+=1
+        self.mutex_lock += 1
         config.glob = True
         for idx, tree in enumerate(self.trees):
             is_set = self.isset is True or idx > 0
@@ -55,5 +50,5 @@ class Fact:
             if (tree[2] is False and is_set and new_state != self.state):
                 self.ft_error()
             self.state |= new_state
-        self.mutex_lock-=1
+        self.mutex_lock -= 1
         return self.state

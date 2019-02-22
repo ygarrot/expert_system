@@ -67,18 +67,6 @@ def query(tree):
         st += str(token)
     computer.print_state(st)
 
-def replace(string):
-    res = str()
-    for line in string.split("\n"):
-        if (line.find("<=>") > 0):
-            p1, p2 = line.split("<=>")
-            res += p2 + "=>" + p1 + "\n"
-            res += p1 + "=>" + p2 + "\n"
-        else:
-            res += line + "\n"
-    return res
-
-
 def test(args):
     if (args.interactive == True):
         interactive_m.interactive()
@@ -88,13 +76,11 @@ def test(args):
     with open(args.path, 'r') as myfile:
             string=myfile.read()
     print(string)
-    # string = replace(string)
     try:
         tree = calc_parser.parse(string)
     except UnexpectedInput as e:
         print(e)
         return
-    # print(tree.pretty())
     set_trees(tree)
     query(tree)
 
