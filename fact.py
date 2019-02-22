@@ -26,6 +26,7 @@ class Fact:
             print("infinit loop")
 
     def check_imply(self,tree):
+        ret = 0
         if (isinstance(tree, Tree)):
             fact = tree.find_data("query")
             for truc in fact:
