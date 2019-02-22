@@ -37,9 +37,10 @@ class Fact:
 
     def get_state(self, computer):
         #TODO Change that lul
-        #if (self.isset == True):
-        #    return self.state
+        # if (self.isset == True):
+           # return self.state
         if (self.mutex_lock >= 2):
+            # self.ft_error()
             return self.state
         self.mutex_lock+=1
         config.glob = True
@@ -49,7 +50,7 @@ class Fact:
                 sys.exit("infinit loop")
             new_state = computer.apply_func(tree[0])
             new_state = not new_state if tree[1] else new_state
-            if (is_set and new_state != self.state):
+            if (tree[2] is False and is_set and new_state != self.state):
                 self.ft_error()
             self.state |= new_state
         self.mutex_lock-=1
