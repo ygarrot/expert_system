@@ -49,7 +49,7 @@ class Fact:
             if (self.check_imply(tree[0]) and tree[1] is True):
                 sys.exit("infinit loop")
             new_state = computer.apply_func(tree[0])
-            new_state = not new_state if tree[1] is True and new_state is True else new_state
+            new_state = not new_state if tree[1] and new_state else new_state
             if (tree[2] is False and is_set and new_state != self.state):
                 self.ft_error()
             self.state |= new_state
