@@ -44,11 +44,11 @@ class Fact:
         config.glob = True
         for idx, tree in enumerate(self.trees):
             is_set = self.isset is True or idx > 0
-            if (is_set and self.state is True and self.check_imply(tree[0]) and tree[1] is True):
+            if (self.check_imply(tree[0]) and tree[1] is True):
                 sys.exit("infinit loop")
             new_state = computer.apply_func(tree[0])
             new_state = not new_state if tree[1] else new_state
-            if ((is_set) and new_state != self.state):
+            if (is_set and new_state != self.state):
                 self.ft_error()
             self.state |= new_state
         self.mutex_lock-=1
