@@ -1,3 +1,5 @@
+import config
+from config import *
 from parse import *
 
 interactive_grammar = r"""
@@ -31,7 +33,13 @@ interactive_grammar = r"""
 """
 
 
+def reset_states():
+        for idx in fact_dict:
+            fact_dict[idx].state = False
+            fact_dict[idx].is_set = False
+            
 def interactive():
+        print('Welcome to the best expert system in the world wide web')
         calc_parser = Lark(interactive_grammar, parser='lalr',
         debug=True, transformer=computer)
         while True:
@@ -39,10 +47,20 @@ def interactive():
                s = input('> ')
            except EOFError:
                break
+           if (s == 'exit'):
+               exit('Good bye')
+               continue
+           elif (s == 'reset'):
+                reset_states()
+                continue
+           elif (s == 'reset --hard'):
+                config.fact_dict = {}
+                continue
+                
            try:
                tree = calc_parser.parse(s)
-           except:
-               logging.error(traceback.format_exc())
+           except UnexpectedInput as e:
+               print(e)
                continue
            if (tree == None):
              continue

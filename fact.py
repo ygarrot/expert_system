@@ -1,4 +1,5 @@
 import sys
+from user import *
 from lark import Tree
 import config
 
@@ -16,14 +17,21 @@ class Fact:
         self.key = key
         self.state = state
 
-    def ft_error(self):
-        print("infinit loop wtf!!!")
-        exit()
-
     def check_fact(self,fact):
         if (self.key == str(fact)):
             return 1
 
+    def remove_tree(self, tree, idx, computer):
+        choice = 'w'
+        st = ("<=>" if tree[2] else "=>") + ('!' if tree[1] else '') + self.key
+        while choice not in ['y', 'n']:
+            choice = input(str("There is an error in operation, would you like to remove this one ? {"
+                + set_choices(tree[0]) + st+ "} y/n?\n"))
+        if (choice == 'n'):
+            sys.exit('infinit loop')
+        self.trees.pop(idx)
+        return self.get_state(computer)
+        
     def check_imply(self,tree):
         ret = 0
         if (isinstance(tree, Tree)):
@@ -42,13 +50,13 @@ class Fact:
         for idx, tree in enumerate(self.trees):
             is_set = self.isset is True or idx > 0
             if (self.check_imply(tree[0]) and tree[1] is True):
-                sys.exit("infinit loop")
+                return self.remove_tree(tree, idx, computer)
             new_state = computer.apply_func(tree[0])
             if tree[1] and not new_state:
                 continue
             new_state = not new_state if tree[1] and new_state else new_state 
             if (tree[2] is False and is_set and new_state != self.state):
-                self.ft_error()
+                return self.remove_tree(tree, idx, computer)
             self.state |= new_state
         self.mutex_lock -= 1
         return self.state

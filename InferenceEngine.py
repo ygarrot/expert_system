@@ -1,4 +1,5 @@
 from fact import Fact, check_fact
+from user import *
 from Ft_op import Ft_op
 from config import *
 import config
@@ -36,18 +37,6 @@ class InferenceEngine(Transformer):
           config.fact_dict[name] = Fact(key=name)
         return config.fact_dict[name].get_state(self)
 
-    def set_choices(self,tree):
-        if (isinstance(tree, Tree) == False):
-            return str(tree)
-        else:
-            return tree.pretty().replace('\n', '')
-
-    def ask_choice(self, tree):
-            choices = [self.set_choices(tree.children[0]), self.set_choices(tree.children[1])]
-            choice = 0
-            while choice not in [ '0', '1']:
-                choice = input(str('would you like to choose {'+ choices[0]+ '} or {'+ choices[1]+ '}\n'))
-            return choice
 
     def set_state(self, tree, op_tree, is_not=False, is_iff=False):
         if (isinstance(tree, Tree) == False):
@@ -59,10 +48,13 @@ class InferenceEngine(Transformer):
         elif (tree.data == 'ft_not'):
             self.set_state(tree.children[0], op_tree, not is_not)
         elif (tree.data == 'ft_or'):
-            choice = self.ask_choice(tree)
-            self.set_state(tree.children[int(choice)], op_tree, is_not, is_iff)
+            choice = ask_or(tree)
+            if (choice is 2):
+                self.set_state(tree.children[0], op_tree, is_not, is_iff)
+                self.set_state(tree.children[1], op_tree, is_not, is_iff)
+            else:
+                self.set_state(tree.children[choice], op_tree, is_not, is_iff)
         elif (tree.data == 'ft_xor'):
-            choice = self.ask_choice(tree)
-            #TODO change that
-            self.set_state(tree.children[int(choice)], op_tree, False, is_iff)
-            self.set_state(tree.children[(not int(choice))], op_tree, True, is_iff)
+            choice = ask_xor(tree)
+            self.set_state(tree.children[choice], op_tree, False, is_iff)
+            self.set_state(tree.children[not choice], op_tree, True, is_iff)
