@@ -1,3 +1,4 @@
+import config
 from config import *
 def set_choices(tree):
     if (isinstance(tree, Tree) == False):
@@ -6,6 +7,8 @@ def set_choices(tree):
         return tree.pretty().replace('\n', '')
 
 def ask_xor(tree):
+    if (config.skip is True):
+        return 0
     choices = [set_choices(tree.children[0]), set_choices(tree.children[1])]
     choice = 0
     while choice not in [ '0', '1']:
@@ -13,6 +16,8 @@ def ask_xor(tree):
     return int(choice)
 
 def ask_or(tree):
+    if (config.skip is True):
+        return 0
     choices = [set_choices(tree.children[0]), set_choices(tree.children[1])]
     choice = 0
     while choice not in [ '0', '1', '2']:

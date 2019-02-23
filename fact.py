@@ -22,6 +22,8 @@ class Fact:
             return 1
 
     def remove_tree(self, tree, idx, computer):
+        if (config.skip):
+            sys.exit('infinit loop')
         choice = 'w'
         st = ("<=>" if tree[2] else "=>") + ('!' if tree[1] else '') + self.key
         while choice not in ['y', 'n']:

@@ -88,8 +88,11 @@ def main():
     parser = argparse.ArgumentParser(description='Smarter expert system you have ever seen')
     parser.add_argument("-i", "--interactive", default=False, action="store_true",
                                        help="interactive expert system")
+    parser.add_argument("-b", "--batch", default=False, action="store_true",
+                                       help="run install in batch mode (without manual intervention)")
     parser.add_argument("path", type=str, default=False, help="input file name")
     args = parser.parse_args()
+    config.skip = args.batch
     test(args)
 
 if __name__ == '__main__':
