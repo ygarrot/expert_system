@@ -81,6 +81,8 @@ def test(args):
     except UnexpectedInput as e:
         print(e)
         return
+    if (args.pretty):
+        print(tree.pretty(pstr))
     set_trees(tree)
     query(tree)
 
@@ -90,7 +92,9 @@ def main():
                                        help="interactive expert system")
     parser.add_argument("-b", "--batch", default=False, action="store_true",
                                        help="run install in batch mode (without manual intervention)")
-    parser.add_argument("path", type=str, default=False, help="input file name")
+    parser.add_argument("-p", "--pretty", default=False, action="store_true",
+                                       help="print pretty trees")
+    parser.add_argument("path", type=str, default="none", help="input file name")
     args = parser.parse_args()
     config.skip = args.batch
     test(args)
