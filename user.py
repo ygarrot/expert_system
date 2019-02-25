@@ -12,7 +12,7 @@ def ask_xor(tree):
     choices = [set_choices(tree.children[0]), set_choices(tree.children[1])]
     choice = 0
     while choice not in [ '0', '1']:
-        choice = input(str('would you like to choose 0:{'+ choices[0]+ '} or 1:{'+ choices[1]+ '}\n'))
+        choice = input(str('Would you like to choose 0:{'+ choices[0]+ '} or 1:{'+ choices[1]+ '}\n'))
     return int(choice)
 
 def ask_or(tree):
@@ -21,5 +21,5 @@ def ask_or(tree):
     choices = [set_choices(tree.children[0]), set_choices(tree.children[1])]
     choice = 0
     while choice not in [ '0', '1', '2']:
-        choice = input(str('would you like to choose 0:{'+ choices[0]+ '} or 1:{'+ choices[1]+ '} or 2: for both\n'))
+        choice = input(str('Would you like to choose 0:{'+ choices[0]+ '} or 1:{'+ choices[1]+ '} or 2: for both\n'))
     return int(choice)

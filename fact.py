@@ -23,14 +23,14 @@ class Fact:
 
     def remove_tree(self, tree, idx, computer):
         if (config.skip):
-            sys.exit('infinit loop')
+            sys.exit('Conflict between rules')
         choice = 'w'
         st = ("<=>" if tree[2] else "=>") + ('!' if tree[1] else '') + self.key
         while choice not in ['y', 'n']:
             choice = input(str("There is an error in operation, would you like to remove this one ? {"
                 + set_choices(tree[0]) + st+ "} y/n?\n"))
         if (choice == 'n'):
-            sys.exit('infinit loop')
+            sys.exit('Conflict between rules')
         self.trees.pop(idx)
         return self.get_state(computer)
         
