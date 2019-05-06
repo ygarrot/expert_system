@@ -5,14 +5,14 @@ The goal of this project is to make a propositional calculus expert system.
 
 https://en.wikipedia.org/wiki/Expert_system
 
-*The following symbols are defined, in order of decreasing priority:
-*• ( and ) which are fairly obvious. Example : A + (B | C) => D
-*• ! which means NOT. Example : !B
-*• + which means AND. Example : A + B
-*• | which means OR. Example : A | B
-*• ˆ which means XOR. Example : A ˆ B
-*• => which means "implies". Example : A + B => C
-*• <=> which means "if and only if". Example : A + B <=> C
+* The following symbols are defined, in order of decreasing priority:
+  * • ( and ) which are fairly obvious. Example : A + (B | C) => D
+  * • ! which means NOT. Example : !B
+  * • + which means AND. Example : A + B
+  * • | which means OR. Example : A | B
+  * • ˆ which means XOR. Example : A ˆ B
+  * • => which means "implies". Example : A + B => C
+  * • <=> which means "if and only if". Example : A + B <=> C
 
 III.2 Input file format
 >zaz@blackjack:~/expert/$ cat -e example_input.txt
