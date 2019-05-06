@@ -16,9 +16,9 @@ https://en.wikipedia.org/wiki/Expert_system
 
 III.2 Input file format
 >zaz@blackjack:~/expert/$ cat -e example_input.txt
-># this is a comment$
-># all the required rules and symbols, along with the bonus ones, will be
-># shown here. spacing is not important
+> '# this is a comment$
+> '# all the required rules and symbols, along with the bonus ones, will be
+> '# shown here. spacing is not important
 >C => E # C implies E
 >A + B + C => D # A and B and C implies D
 >A | B => C # A or B implies C
