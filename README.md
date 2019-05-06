@@ -1,8 +1,8 @@
 # expert_system
-`Abstract: The goal of this project is to make a propositional calculus expert system.
+Abstract: The goal of this project is to make a propositional calculus expert system.
 
 The goal of this project is to make a propositional calculus expert system.
-`
+
 https://en.wikipedia.org/wiki/Expert_system
 
 * The following symbols are defined, in order of decreasing priority:
