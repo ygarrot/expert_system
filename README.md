@@ -15,10 +15,10 @@ https://en.wikipedia.org/wiki/Expert_system
   *  <=> which means "if and only if". Example : A + B <=> C
 
 III.2 Input file format
->zaz@blackjack:~/expert/$ cat -e example_input.txt
-> '# this is a comment$
-> '# all the required rules and symbols, along with the bonus ones, will be
-> '# shown here. spacing is not important
+>zaz@blackjack:~/expert/$ cat -e example_input.txt<br />
+> '# this is a comment$<br />
+> '# all the required rules and symbols, along with the bonus ones, will be<br />
+> '# shown here. spacing is not important<br />
 >C => E # C implies E
 >A + B + C => D # A and B and C implies D<br />
 >A | B => C # A or B implies C<br />
@@ -31,6 +31,6 @@ III.2 Input file format
 >A + B <=> C # A and B if and only if C<br />
 >A + B <=> !C # A and B if and only if not C<br />
 >=ABG # Initial facts : A, B and G are true. All others are false.<br />
-># If no facts are initially true, then a simple "=" followed<br />
-># by a newline is used<br />
->?GVX # Queries : What are G, V and X ?<br />
+> # If no facts are initially true, then a simple "=" followed<br />
+> # by a newline is used<br />
+> ?GVX # Queries : What are G, V and X ?<br />
